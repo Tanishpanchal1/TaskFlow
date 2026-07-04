@@ -5,12 +5,8 @@ sqlalchemy
 asyncpg
 alembic
 
-pydantic
-pydantic-settings
-
 python-jose[cryptography]
 passlib[bcrypt]
-python-dotenv
 
 redis
 
@@ -22,3 +18,9 @@ ruff
 black
 isort
 mypy
+
+
+pydantic>=2.11
+pydantic-settings>=2.10
+python-dotenv>=1.1
+typing-extensions>=4.14
