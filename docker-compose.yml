@@ -1,7 +1,7 @@
 version: "3.9"
 
 services:
-  postgres:
+  db:
     image: postgres:16
     container_name: taskflow-db
     restart: unless-stopped
@@ -19,24 +19,17 @@ services:
       timeout: 5s
       retries: 5
 
-  redis:
-    image: redis:7
-    container_name: taskflow-redis
-    restart: unless-stopped
-    ports:
-      - "6379:6379"
-
   web:
     build: .
     container_name: taskflow-api
     depends_on:
-      postgres:
+      db:
         condition: service_healthy
-      redis:
-        condition: service_started
+    env_file:
+      - .env
     environment:
-      DATABASE_URL: postgresql+asyncpg://postgres:postgres@postgres:5432/taskflow
-      REDIS_URL: redis://redis:6379/0
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@db:5432/taskflow
+      REDIS_URL: redis://localhost:6379/0
       SECRET_KEY: dev-secret-key
       ALGORITHM: HS256
       ACCESS_TOKEN_EXPIRE_MINUTES: "30"
@@ -45,6 +38,18 @@ services:
       - "8000:8000"
     volumes:
       - .:/app
+
+  pgadmin:
+    image: dpage/pgadmin4:8
+    container_name: taskflow-pgadmin
+    restart: unless-stopped
+    depends_on:
+      - db
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@taskflow.local
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
 
 volumes:
   postgres_data:
