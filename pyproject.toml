@@ -1,0 +1,66 @@
+[project]
+name = "taskflow"
+version = "0.1.0"
+description = "Production Ready Task Management API"
+requires-python = ">=3.12"
+
+####################################################
+# BLACK
+####################################################
+
+[tool.black]
+
+line-length = 88
+target-version = ["py312"]
+
+####################################################
+# RUFF
+####################################################
+
+[tool.ruff]
+
+line-length = 88
+target-version = "py312"
+
+exclude = [
+    ".venv",
+    "__pycache__",
+    "alembic"
+]
+
+[tool.ruff.lint]
+
+select = [
+"E",
+"F",
+"I",
+"N",
+"UP",
+"B",
+"C4",
+"SIM"
+]
+
+####################################################
+# ISORT
+####################################################
+
+[tool.isort]
+
+profile = "black"
+
+####################################################
+# MYPY
+####################################################
+
+[tool.mypy]
+
+python_version = "3.12"
+
+ignore_missing_imports = true
+
+warn_unused_configs = true
+
+warn_return_any = true
+
+strict_optional = true
